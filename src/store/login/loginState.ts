@@ -4,12 +4,14 @@ export interface LoginState {
   isButtonDisabled: boolean;
   helperText: string;
   isError: boolean;
+  userId: string;
 }
 
 export const initialLoginState: LoginState = {
-  username: 'alex que tal',
+  username: '',
   password: '',
   isButtonDisabled: false,
   helperText: '',
   isError: false,
+  userId: '',
 };

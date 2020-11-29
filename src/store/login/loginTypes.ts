@@ -16,7 +16,7 @@ export interface LoginActionDispatchers {
   setUsername: (username: string) => LoginAction<string>;
   setPassword: (password: string) => LoginAction<string>;
   setIsButtonDisabled: (setDisable: boolean) => LoginAction<boolean>;
-  loginSuccess: (loginSuccess: string) => LoginAction<string>;
+  loginUser: (username: string, password: string) => Promise<any>;
   loginFailed: (loginFailed: string) => LoginAction<string>;
   setError: (setError: boolean) => LoginAction<boolean>;
 }

@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { ROOT } from '../navigation/constants';
 
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
@@ -10,6 +11,7 @@ import Button from '@material-ui/core/Button';
 
 import { useLoginStyles } from '../styles';
 import { LoginActionDispatchers, LoginState } from '../store/login';
+import { getSession } from '../utils/getSession';
 
 type Props = {
   state: LoginState;
@@ -20,11 +22,7 @@ const Login: React.FC<Props> = ({ state, actions }) => {
   const classes = useLoginStyles();
 
   const handleLogin = () => {
-    if (state.username === 'abc@email.com' && state.password === 'password') {
-      actions.loginSuccess('Login Successfull');
-    } else {
-      actions.loginFailed('Incorrect username or password');
-    }
+    actions.loginUser(state.username, state.password);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -40,6 +38,10 @@ const Login: React.FC<Props> = ({ state, actions }) => {
   const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> = event => {
     actions.setPassword(event.target.value);
   };
+
+  if (state.userId !== '' && state.userId.length && getSession()) {
+    return <Redirect to={ROOT} />;
+  }
 
   return (
     <form className={classes.container} noValidate autoComplete='off'>
