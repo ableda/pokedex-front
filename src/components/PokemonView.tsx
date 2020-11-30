@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { Button, Grid, List, ListItem, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Button, Grid, List, ListItem, Paper, Typography } from '@material-ui/core';
 
 import { usePokemonViewStyles } from '../styles';
 import { PokemonActionDispatchers, PokemonState } from '../store/pokemon';
