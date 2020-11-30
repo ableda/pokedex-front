@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { ROOT } from '../navigation/constants';
+import React, { useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
+import { LOGIN, ROOT } from '../navigation/constants';
 
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
@@ -10,50 +10,42 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
 
 import { useLoginStyles } from '../styles';
-import { LoginActionDispatchers, LoginState } from '../store/login';
-import { isAuthenticated } from '../utils/isAuthenticated';
-
-import SignUpContainer from '../containers/SignUpContainer';
-import { SignUpActionDispatchers } from '../store/signUp';
+import { SignUpActionDispatchers, SignUpState } from '../store/signUp';
 
 type Props = {
-  state: LoginState & { showSignUp: boolean };
-  actions: LoginActionDispatchers;
-  signUpActions: SignUpActionDispatchers;
+  state: SignUpState;
+  actions: SignUpActionDispatchers;
 };
 
-const Login: React.FC<Props> = ({ state, actions, signUpActions }) => {
+const SignUp: React.FC<Props> = ({ state, actions }) => {
   const classes = useLoginStyles();
 
-  const handleLogin = () => {
-    actions.loginUser(state.username, state.password);
-  };
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
   const handleSignUp = () => {
-    signUpActions.setShowSignUp(true);
+    actions.signUpUser(username, password);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.keyCode === 13 || event.which === 13) {
-      state.isButtonDisabled || handleLogin();
+      handleSignUp();
     }
   };
 
   const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> = event => {
-    actions.setUsername(event.target.value);
+    setUsername(event.target.value);
   };
 
   const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> = event => {
-    actions.setPassword(event.target.value);
+    setPassword(event.target.value);
   };
 
-  if (state.userId !== '' && state.userId.length && isAuthenticated()) {
-    return <Redirect to={ROOT} />;
-  }
-
-  if (state.showSignUp) {
-    return <SignUpContainer></SignUpContainer>;
-  }
+  useEffect(() => {
+    if (state.message === 'Signup successful') {
+      actions.setShowSignUp(false);
+    }
+  }, [state.message]);
 
   return (
     <form className={classes.container} noValidate autoComplete='off'>
@@ -62,7 +54,7 @@ const Login: React.FC<Props> = ({ state, actions, signUpActions }) => {
         <CardContent>
           <div>
             <TextField
-              error={state.isError}
+              error={state.error}
               fullWidth
               id='username'
               type='email'
@@ -73,39 +65,22 @@ const Login: React.FC<Props> = ({ state, actions, signUpActions }) => {
               onKeyPress={handleKeyPress}
             />
             <TextField
-              error={state.isError}
+              error={state.error}
               fullWidth
               id='password'
               type='password'
               label='Password'
               placeholder='Password'
               margin='normal'
-              helperText={state.helperText}
+              helperText={state.message}
               onChange={handlePasswordChange}
               onKeyPress={handleKeyPress}
             />
           </div>
         </CardContent>
         <CardActions>
-          <Button
-            variant='contained'
-            size='large'
-            color='secondary'
-            className={classes.loginBtn}
-            onClick={handleLogin}
-            disabled={state.isButtonDisabled}
-          >
-            Login
-          </Button>
-          <Button
-            variant='contained'
-            size='large'
-            color='secondary'
-            className={classes.loginBtn}
-            onClick={handleSignUp}
-            disabled={state.isButtonDisabled}
-          >
-            SignUp
+          <Button variant='contained' size='large' color='secondary' className={classes.loginBtn} onClick={handleSignUp}>
+            Sign Up
           </Button>
         </CardActions>
       </Card>
@@ -113,4 +88,4 @@ const Login: React.FC<Props> = ({ state, actions, signUpActions }) => {
   );
 };
 
-export default Login;
+export default SignUp;

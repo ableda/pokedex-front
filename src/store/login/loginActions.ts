@@ -31,7 +31,7 @@ export const loginUser = (username: string, password: string): any => {
 
       dispatch({
         type: LoginActions.LOGIN_SUCCESS,
-        payload: loginResponse.userId,
+        payload: { userId: loginResponse.userId, token: loginResponse.token },
       });
     } catch (error) {
       dispatch({

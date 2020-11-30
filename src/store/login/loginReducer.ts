@@ -21,7 +21,8 @@ export const loginReducer = (state: LoginState = initialLoginState, action: Logi
     case LoginActions.LOGIN_SUCCESS:
       return {
         ...state,
-        userId: action.payload,
+        userId: action.payload.userId,
+        token: action.payload.token,
         isError: false,
       };
     case LoginActions.LOGIN_FAILED:

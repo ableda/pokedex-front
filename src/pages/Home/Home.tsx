@@ -9,6 +9,7 @@ import { Link, Switch, Route } from 'react-router-dom';
 import { POKEMON } from '../../navigation/constants';
 
 import Pokemon from '../../components/Pokemon';
+import PokedexContainer from '../../containers/PokedexContainer';
 
 const Home = () => {
   const classes = useHomeStyles();
@@ -27,6 +28,7 @@ const Home = () => {
 
       <Switch>
         <Route path='/pokemon' component={Pokemon} />
+        <Route path='/pokedex' component={PokedexContainer} />
       </Switch>
     </div>
   );

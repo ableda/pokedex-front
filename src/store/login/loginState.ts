@@ -5,6 +5,7 @@ export interface LoginState {
   helperText: string;
   isError: boolean;
   userId: string;
+  token: string;
 }
 
 export const initialLoginState: LoginState = {
@@ -14,4 +15,5 @@ export const initialLoginState: LoginState = {
   helperText: '',
   isError: false,
   userId: '',
+  token: '',
 };

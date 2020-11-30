@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { getSession } from '../utils/getSession';
+import { isAuthenticated } from '../utils/isAuthenticated';
 import { LOGIN } from './constants';
 
 interface ProtectedRouteProps {
@@ -10,24 +10,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ component: Component, ...props }: ProtectedRouteProps) => {
-  console.log('Getting session: ', getSession());
-  return (
-    <Route
-      {...props}
-      render={props =>
-        getSession() ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: LOGIN,
-              state: { from: props.location },
-            }}
-          />
-        )
-      }
-    />
-  );
+  return <Route {...props} render={props => (isAuthenticated() ? <Component {...props} /> : <Redirect to={{ pathname: LOGIN }} />)} />;
 };
 
 export default ProtectedRoute;
